@@ -54,11 +54,11 @@ module.exports = ({ develop }) => ({
   },
 
   plugins: [
-    // new CopyPlugin({
-    //   patterns: [
-    //     {from: './public'}
-    //   ]
-    // }),
+    new CopyPlugin({
+      patterns: [
+        {from: './public'}
+      ]
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
