@@ -8,7 +8,6 @@ export default class Control {
     tagName = '',
     className = '',
     innerContent = '',
-    children?: Array<Control>,
   ) {
     const el = document.createElement(tagName);
     el.className = className;
@@ -16,13 +15,10 @@ export default class Control {
     this.parent = parent;
     this.node = el;
     parent?.appendChild(this.node);
-    if (children) {
-      this.setParent(this.node);
-    }
   }
 
   setParent(parent: HTMLElement): void {
-    if (!this.parent) {
+    if (this.parent === undefined) {
       this.parent = parent;
       this.parent.appendChild(this.node);
     }
