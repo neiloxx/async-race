@@ -1,6 +1,6 @@
 import Control from './components/elements/control';
 import Header from './components/header/header';
-import './style.css';
+import './style.scss';
 import Garage from './pages/garage/garage';
 import Winners from './pages/winners/winners';
 import Settings from './pages/settings/settings';
