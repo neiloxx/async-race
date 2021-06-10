@@ -3,7 +3,7 @@ import Control from './control';
 export default class ControlArray extends Control {
   constructor(
     parent?: HTMLElement,
-    tagName = '',
+    tagName: keyof HTMLElementTagNameMap = 'div',
     className = '',
     children: Array<Control> = [],
   ) {

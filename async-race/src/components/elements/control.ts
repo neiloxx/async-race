@@ -5,9 +5,9 @@ export default class Control {
 
   constructor(
     parent?: HTMLElement,
-    tagName = '',
+    tagName: keyof HTMLElementTagNameMap = 'div',
     className = '',
-    innerContent = '',
+    private innerContent = '',
   ) {
     const el = document.createElement(tagName);
     el.className = className;
