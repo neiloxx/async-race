@@ -1,4 +1,4 @@
-import './style.css';
+import './style.scss';
 import ControlArray from '../elements/control-array';
 import Link from '../elements/link/link';
 
