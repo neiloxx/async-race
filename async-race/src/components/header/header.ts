@@ -1,23 +1,31 @@
 import './style.scss';
-import ControlArray from '../elements/control-array';
+import Control from '../elements/control';
 import Link from '../elements/link/link';
+import ControlArray from '../elements/control-array';
 
-export default class Header extends ControlArray {
+export default class Header extends Control {
+  element: Control;
+
   constructor(parent: HTMLElement) {
-    super(parent, 'header', 'header', [
-      new ControlArray(undefined, 'div', 'header__container', [
-        new ControlArray(undefined, 'nav', 'header__nav nav', [
-          new ControlArray(undefined, 'ul', 'nav-list', [
-            new ControlArray(undefined, 'li', 'nav-list__item', [
-              new Link(undefined, 'nav-list__item-link', '#', 'garage'),
-            ]),
-            new ControlArray(undefined, 'li', 'nav-list__item', [
-              new Link(undefined, 'nav-list__item-link', '#winners', 'winners'),
-            ]),
-          ]),
+    super(parent, 'header', 'header');
+
+    const garageItem = new ControlArray('li', 'nav-list__item', [
+      new Link(undefined, 'nav-list__item-link', '#', 'garage'),
+    ]);
+    const winnersItem = new ControlArray('li', 'nav-list__item', [
+      new Link(undefined, 'nav-list__item-link', '#winners', 'winners'),
+    ]);
+
+    this.element = new ControlArray(
+      'div',
+      'header__container',
+      [
+        new ControlArray('nav', 'header__nav nav', [
+          new ControlArray('ul', 'nav-list', [garageItem, winnersItem]),
         ]),
         new Link(undefined, 'settings', '#settings'),
-      ]),
-    ]);
+      ],
+      this.node,
+    );
   }
 }
