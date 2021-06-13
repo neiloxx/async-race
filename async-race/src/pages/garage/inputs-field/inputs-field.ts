@@ -1,14 +1,7 @@
 import Control from '../../../components/elements/control';
 import ControlArray from '../../../components/elements/control-array';
+import { renderInputs, renderButtons } from './render-el/render-el';
 import './style.scss';
-import {
-  createInputName,
-  createInputColor,
-  createBtn,
-  updateInputName,
-  updateInputColor,
-  updateBtn,
-} from './inputs/inputs';
 
 export default class InputsField extends Control {
   createWrapper: ControlArray;
@@ -22,16 +15,27 @@ export default class InputsField extends Control {
   ) {
     super(parent, tagName, className);
 
+    const renderInput = renderInputs();
+    const renderBtn = renderButtons();
+
     this.createWrapper = new ControlArray(
       'div',
       'garage__inputs-create',
-      [createInputName, createInputColor, createBtn],
+      [
+        renderInput.createInputName,
+        renderInput.createInputColor,
+        renderBtn.createBtn,
+      ],
       this.node,
     );
     this.updateWrapper = new ControlArray(
       'div',
       'garage__inputs-update',
-      [updateInputName, updateInputColor, updateBtn],
+      [
+        renderInput.updateInputName,
+        renderInput.updateInputColor,
+        renderBtn.updateBtn,
+      ],
       this.node,
     );
   }
