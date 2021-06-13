@@ -1,13 +1,13 @@
 import { get } from './fetcher';
 import routes from './routes';
-import { GetCarsResponse } from './interfaces';
+import { IGetCarsResponse } from './interfaces';
 
 const maxCarsOnPage = 7;
 
 export const getCars = async (
   page: number,
   limit: number = maxCarsOnPage,
-): Promise<GetCarsResponse> => {
+): Promise<IGetCarsResponse> => {
   return get(`${routes.garage}?_page=${page}&_limit=${limit}`).then(
     async res => {
       return {

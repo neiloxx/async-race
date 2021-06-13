@@ -1,10 +1,10 @@
 import { getCars } from '../api/cars';
-import { Car } from '../api/interfaces';
+import { ICar } from '../api/interfaces';
 
 class Store {
   carsPage = 1;
 
-  cars: Array<Car> = [];
+  cars: Array<ICar> = [];
 
   carsCount = 0;
 

@@ -1,9 +1,9 @@
-export interface GetCarsResponse {
-  items: Array<Car>;
+export interface IGetCarsResponse {
+  items: Array<ICar>;
   count: number;
 }
 
-export interface Car {
+export interface ICar {
   name: string;
   id: number;
   color: string;
