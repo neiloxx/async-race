@@ -1,5 +1,19 @@
 @import '../../const/extended';
+@import '../../const/mixins';
 
 .garage {
   @extend %main-base;
+
+  &__container {
+    padding: 2rem;
+  }
+
+  &__title {
+    @include fonts(2rem, 500, #fff);
+    text-transform: uppercase;
+  }
+
+  &__inputs {
+    padding: 2rem;
+  }
 }
