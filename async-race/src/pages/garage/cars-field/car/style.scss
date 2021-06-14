@@ -1,0 +1,50 @@
+@import '../../../../const/mixins';
+
+.car {
+  &__wrapper {
+    background-color: RGBA(0, 0, 0, 0.3);
+  }
+
+  &__race {
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 3.5rem;
+      height: .2rem;
+      width: 100%;
+      background-color: #f2f2f2;
+    }
+  }
+
+  &__settings {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__image {
+    height: 4rem;
+    width: 80%;
+    border-bottom: .5rem dashed #fff;
+  }
+
+  &__btn {
+    width: 6rem;
+    height: 3rem;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+
+  &__text {
+    @include fonts(18px, 500, #fff)
+  }
+}
