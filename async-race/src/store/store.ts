@@ -8,8 +8,12 @@ class Store {
 
   carsCount = 0;
 
+  createInputNameValue = '';
+
+  createInputColorValue = '#000000';
+
   async getValues(): Promise<void> {
-    await getCars(1).then(res => {
+    await getCars(this.carsPage).then(res => {
       this.cars = res.items;
       this.carsCount = res.count;
     });

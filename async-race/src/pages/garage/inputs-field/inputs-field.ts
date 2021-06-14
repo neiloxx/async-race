@@ -3,6 +3,8 @@ import ControlArray from '../../../components/elements/control-array';
 import { renderInputs, renderButtons } from './render-el/render-el';
 import './style.scss';
 import { ICar } from '../../../api/interfaces';
+import store from '../../../store/store';
+import { disableBtn, enableBtn } from '../../../utils/handle-appearance';
 
 export default class InputsField extends Control {
   createWrapper: ControlArray;
@@ -13,9 +15,9 @@ export default class InputsField extends Control {
 
   renderBtn = renderButtons();
 
-  value = '';
+  createValue = store.createInputNameValue;
 
-  color = '#000000';
+  createColor = store.createInputColorValue;
 
   constructor(
     parent: HTMLElement,
@@ -33,6 +35,9 @@ export default class InputsField extends Control {
       ],
       this.node,
     );
+    if (this.createValue) {
+      enableBtn(this.renderBtn.createBtn);
+    }
     this.updateWrapper = new ControlArray(
       'div',
       'garage__inputs-update',
@@ -46,32 +51,36 @@ export default class InputsField extends Control {
   }
 
   watchInputs(): void {
-    this.renderInput.createInputName.getNode().oninput = (event: Event) => {
-      const input = <HTMLInputElement>event.target;
-      this.value = input.value;
-      this.activateBtn();
-      if (!this.value) {
-        this.blockBtn();
-      }
-    };
-    this.renderInput.createInputColor.getNode().oninput = (event: Event) => {
-      const input = <HTMLInputElement>event.target;
-      this.color = input.value;
-    };
+    this.handleCreateInputs();
   }
 
   getInputsValue(): ICar {
     return {
-      name: this.value,
-      color: this.color,
+      name: this.createValue,
+      color: this.createColor,
     };
   }
 
-  activateBtn(): void {
-    this.renderBtn.createBtn.getNode().removeAttribute('disabled');
-  }
+  handleCreateInputs(): void {
+    const inputName =
+      this.renderInput.createInputName.getNode() as HTMLInputElement;
+    inputName.value = this.createValue;
+    const inputColor =
+      this.renderInput.createInputColor.getNode() as HTMLInputElement;
+    inputColor.value = this.createColor;
 
-  blockBtn(): void {
-    this.renderBtn.createBtn.getNode().setAttribute('disabled', '');
+    this.renderInput.createInputName.getNode().oninput = (event: Event) => {
+      const input = <HTMLInputElement>event.target;
+      store.createInputNameValue = input.value;
+      enableBtn(this.renderBtn.createBtn);
+      if (!store.createInputNameValue) {
+        disableBtn(this.renderBtn.createBtn);
+      }
+    };
+
+    this.renderInput.createInputColor.getNode().oninput = (event: Event) => {
+      const input = <HTMLInputElement>event.target;
+      store.createInputColorValue = input.value;
+    };
   }
 }
