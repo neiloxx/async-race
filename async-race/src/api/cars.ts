@@ -18,6 +18,11 @@ export const getCars = async (
   );
 };
 
+export const getCar = async (id: number): Promise<ICar> => {
+  const response = await fetch(`${routes.garage}/${id}`);
+  return response.json();
+};
+
 export const createCar = async (body: ICar): Promise<void> => {
   await post(`${routes.garage}`, body);
 };
