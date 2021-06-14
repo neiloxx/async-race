@@ -54,12 +54,12 @@ export default class InputsField extends Control {
     this.handleCreateInputs();
   }
 
-  getInputsValue(): ICar {
+  getInputsValue = (): ICar => {
     return {
-      name: this.createValue,
-      color: this.createColor,
+      name: store.createInputNameValue,
+      color: store.createInputColorValue,
     };
-  }
+  };
 
   handleCreateInputs(): void {
     const inputName =
