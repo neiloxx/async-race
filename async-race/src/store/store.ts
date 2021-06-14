@@ -1,4 +1,4 @@
-import { getCars } from '../api/cars';
+import { getCars, maxCarsOnPage } from '../api/cars';
 import { ICar } from '../api/interfaces';
 
 class Store {
@@ -11,6 +11,8 @@ class Store {
   createInputNameValue = '';
 
   createInputColorValue = '#000000';
+
+  maxCarsOnPage = maxCarsOnPage;
 
   async getValues(): Promise<void> {
     await getCars(this.carsPage).then(res => {

@@ -2,7 +2,7 @@ import { get, post } from './fetcher';
 import routes from './routes';
 import { ICar, IGetCarsResponse } from './interfaces';
 
-const maxCarsOnPage = 7;
+export const maxCarsOnPage = 7;
 
 export const getCars = async (
   page: number,
