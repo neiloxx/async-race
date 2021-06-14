@@ -30,13 +30,25 @@ export default class Garage extends Control {
       if (!newCar?.name) throw new Error("There's no new car");
       createCar(newCar).then(async () => {
         await store.getValues();
-        this.node.innerHTML = '';
         this.render();
       });
+    };
+
+    if (!this.pages) throw new Error("There's no more pages");
+    this.pages.nextBtn.getNode().onclick = () => {
+      store.carsPage++;
+      store.getValues().then(() => this.render());
+    };
+    this.pages.prevBtn.getNode().onclick = () => {
+      if (store.carsPage - 1 >= 1) {
+        store.carsPage--;
+        store.getValues().then(() => this.render());
+      }
     };
   }
 
   render(): void {
+    this.node.innerHTML = '';
     this.inputsField = new InputsField(this.node, 'div', 'garage__inputs');
     this.inputsField.watchInputs();
     this.title = new Control(
