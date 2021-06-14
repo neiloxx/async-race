@@ -1,6 +1,7 @@
 import Input from '../../../../components/elements/input/input';
 import Control from '../../../../components/elements/control';
 import { IInput, IButton } from './interfaces';
+import Button from '../../../../components/elements/button/button';
 
 export const renderInputs = (): IInput => {
   const createInputName = new Input(
@@ -42,18 +43,18 @@ export const renderInputs = (): IInput => {
 };
 
 export const renderButtons = (): IButton => {
-  const createBtn = new Control(
+  const createBtn = new Button(
     undefined,
-    'button',
     'inputs-create__button',
     'Create',
+    true,
   );
 
-  const updateBtn = new Control(
+  const updateBtn = new Button(
     undefined,
-    'button',
     'inputs-update__button',
     'Update',
+    true,
   );
   return { createBtn, updateBtn };
 };

@@ -1,4 +1,5 @@
 import Control from '../../../../components/elements/control';
+import Button from '../../../../components/elements/button/button';
 
 export interface IInput {
   createInputName: Control;
@@ -8,6 +9,6 @@ export interface IInput {
 }
 
 export interface IButton {
-  createBtn: Control;
-  updateBtn: Control;
+  createBtn: Button;
+  updateBtn: Button;
 }
