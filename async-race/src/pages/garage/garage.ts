@@ -36,8 +36,10 @@ export default class Garage extends Control {
 
     if (!this.pages) throw new Error("There's no more pages");
     this.pages.nextBtn.getNode().onclick = () => {
-      store.carsPage++;
-      store.getValues().then(() => this.render());
+      if (store.carsPage * store.maxCarsOnPage < store.carsCount) {
+        store.carsPage++;
+        store.getValues().then(() => this.render());
+      }
     };
     this.pages.prevBtn.getNode().onclick = () => {
       if (store.carsPage - 1 >= 1) {
