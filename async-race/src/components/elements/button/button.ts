@@ -9,7 +9,7 @@ export default class Button extends Control {
   ) {
     super(parent, 'button', classList, content);
     if (disabled) {
-      this.node.setAttribute('disabled', 'true');
+      this.node.setAttribute('disabled', '');
     }
   }
 }
