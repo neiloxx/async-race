@@ -1,4 +1,4 @@
-import { get, post, put } from './fetcher';
+import { del, get, post, put } from './fetcher';
 import routes from './routes';
 import { ICar, IGetCarsResponse } from './interfaces';
 
@@ -24,4 +24,8 @@ export const updateCar = async (id: number, body: ICar): Promise<void> => {
 
 export const createCar = async (body: ICar): Promise<void> => {
   await post(`${routes.garage}`, body);
+};
+
+export const deleteCar = async (id: number): Promise<void> => {
+  await del(`${routes.garage}/${id}`);
 };

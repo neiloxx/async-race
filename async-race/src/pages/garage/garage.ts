@@ -4,7 +4,7 @@ import ControlArray from '../../components/elements/control-array';
 import store from '../../store/store';
 import InputsField from './inputs-field/inputs-field';
 import CarsField from './cars-field/cars-field';
-import { createCar, updateCar } from '../../api/cars';
+import { createCar, deleteCar, updateCar } from '../../api/cars';
 import PagesContainer from './pages-container/pages-container';
 import { ICar } from '../../api/interfaces';
 
@@ -70,6 +70,14 @@ export default class Garage extends Control {
         if (car.id) {
           store.selectedCar = car;
           this.inputsField?.handleUpdateInputs(car);
+        }
+      },
+      (car: ICar) => {
+        if (car.id) {
+          deleteCar(car.id).then(async () => {
+            await store.getValues();
+            this.render();
+          });
         }
       },
     );

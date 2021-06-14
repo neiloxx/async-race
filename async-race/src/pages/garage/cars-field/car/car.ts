@@ -17,7 +17,11 @@ export default class Car extends Control implements ICar {
 
   removeBtn: Button;
 
-  constructor(car: ICar, selectCar: (car: ICar) => void = () => {}) {
+  constructor(
+    car: ICar,
+    selectCar: (car: ICar) => void = () => {},
+    removeCar: (car: ICar) => void = () => {},
+  ) {
     super(undefined, 'div', 'cars-field__car');
     this.name = car.name;
     this.color = car.color;
@@ -47,6 +51,7 @@ export default class Car extends Control implements ICar {
     );
 
     this.selectBtn.getNode().onclick = () => selectCar(this);
+    this.removeBtn.getNode().onclick = () => removeCar(this);
   }
 
   renderCar = (color: string): Control => {
