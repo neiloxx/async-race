@@ -55,5 +55,12 @@ export const renderButtons = (): IButton => {
     'Update',
     true,
   );
-  return { createBtn, updateBtn };
+
+  const raceBtn = new Button(undefined, 'garage__button', 'Race');
+
+  const resetBtn = new Button(undefined, 'garage__button', 'Reset', true);
+
+  const createRandom = new Button(undefined, 'garage__button', 'Create random');
+
+  return { createBtn, updateBtn, raceBtn, resetBtn, createRandom };
 };

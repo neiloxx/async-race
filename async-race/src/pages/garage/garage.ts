@@ -7,6 +7,7 @@ import CarsField from './cars-field/cars-field';
 import { createCar, deleteCar, updateCar } from '../../api/cars';
 import PagesContainer from './pages-container/pages-container';
 import { ICar } from '../../api/interfaces';
+import { generateRandomCars } from '../../utils/utils';
 
 export default class Garage extends Control {
   wrapper?: ControlArray;
@@ -48,6 +49,7 @@ export default class Garage extends Control {
       }
     };
 
+    this.createRandomCars();
     this.pageHandler();
   }
 
@@ -104,6 +106,16 @@ export default class Garage extends Control {
         store.carsPage--;
         store.getValues().then(() => this.render());
       }
+    };
+  }
+
+  createRandomCars(): void {
+    if (!this.inputsField) throw new Error("There's no render elements");
+    this.inputsField.createRandom.getNode().onclick = async () => {
+      const randomCars = generateRandomCars();
+      randomCars.forEach(el => createCar(el));
+      await store.getValues();
+      this.render();
     };
   }
 }

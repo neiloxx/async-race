@@ -11,4 +11,7 @@ export interface IInput {
 export interface IButton {
   createBtn: Button;
   updateBtn: Button;
+  raceBtn: Button;
+  resetBtn: Button;
+  createRandom: Button;
 }

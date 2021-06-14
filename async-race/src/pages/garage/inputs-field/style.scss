@@ -23,3 +23,21 @@
   height: 3rem;
   cursor: pointer;
 }
+
+.garage {
+  &__button {
+    max-width: 10rem;
+    width: 100%;
+    height: 3rem;
+    cursor: pointer;
+  }
+
+  &__btns-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    max-width: 35rem;
+    width: 100%;
+  }
+}
+

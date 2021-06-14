@@ -4,7 +4,8 @@ import { renderInputs, renderButtons } from './render-el/render-el';
 import './style.scss';
 import { ICar } from '../../../api/interfaces';
 import store from '../../../store/store';
-import { disableBtn, enableBtn } from '../../../utils/handle-appearance';
+import { disableBtn, enableBtn } from '../../../utils/utils';
+import Button from '../../../components/elements/button/button';
 
 export default class InputsField extends Control {
   createWrapper: ControlArray;
@@ -19,12 +20,21 @@ export default class InputsField extends Control {
 
   createColor = store.createInputColorValue;
 
+  buttonWrapper: ControlArray;
+
+  raceBtn = this.renderBtn.raceBtn;
+
+  resetBtn = this.renderBtn.resetBtn;
+
+  createRandom = this.renderBtn.createRandom;
+
   constructor(
     parent: HTMLElement,
     tagName: keyof HTMLElementTagNameMap,
     className = '',
   ) {
     super(parent, tagName, className);
+
     this.createWrapper = new ControlArray(
       'div',
       'garage__inputs-create',
@@ -38,6 +48,7 @@ export default class InputsField extends Control {
     if (this.createValue) {
       enableBtn(this.renderBtn.createBtn);
     }
+
     this.updateWrapper = new ControlArray(
       'div',
       'garage__inputs-update',
@@ -46,6 +57,13 @@ export default class InputsField extends Control {
         this.renderInput.updateInputColor,
         this.renderBtn.updateBtn,
       ],
+      this.node,
+    );
+
+    this.buttonWrapper = new ControlArray(
+      'div',
+      'garage__btns-container',
+      [this.raceBtn, this.resetBtn, this.createRandom],
       this.node,
     );
   }
