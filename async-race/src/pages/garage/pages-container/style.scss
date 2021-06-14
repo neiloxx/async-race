@@ -1,0 +1,36 @@
+@import "../../../const/mixins";
+
+.garage {
+  &__pages {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__subtitle {
+    @include fonts(16px, 400, #ffffff);
+  }
+}
+
+.pages {
+  &__buttons {
+    margin-top: 1rem;
+    width: 8rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__btn {
+    width: 3rem;
+    height: 3rem;
+    cursor: pointer;
+  }
+}

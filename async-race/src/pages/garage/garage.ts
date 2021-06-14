@@ -5,6 +5,7 @@ import store from '../../store/store';
 import InputsField from './inputs-field/inputs-field';
 import CarsField from './cars-field/cars-field';
 import { createCar } from '../../api/cars';
+import PagesContainer from './pages-container/pages-container';
 
 export default class Garage extends Control {
   wrapper?: ControlArray;
@@ -14,6 +15,8 @@ export default class Garage extends Control {
   carsField?: CarsField;
 
   title?: Control;
+
+  pages?: PagesContainer;
 
   constructor(parent: HTMLElement) {
     super(parent, 'section', 'garage');
@@ -42,6 +45,7 @@ export default class Garage extends Control {
       'garage__title',
       `garage(${store.carsCount})`,
     );
+    this.pages = new PagesContainer();
 
     this.carsField = new CarsField(undefined, 'garage__cars-field');
     this.startObserve();
@@ -49,7 +53,7 @@ export default class Garage extends Control {
     this.wrapper = new ControlArray(
       'div',
       'garage__container',
-      [this.title, this.carsField],
+      [this.title, this.pages, this.carsField],
       this.node,
     );
   }
