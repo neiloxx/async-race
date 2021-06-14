@@ -56,3 +56,16 @@ export const post = (url: string, body: ICar): Promise<Response> => {
     return response;
   });
 };
+
+export const put = (url: string, body: ICar): Promise<Response> => {
+  return fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  }).then(response => {
+    checkStatus(response);
+    return response;
+  });
+};
