@@ -1,6 +1,6 @@
-import { get } from './fetcher';
+import { get, post } from './fetcher';
 import routes from './routes';
-import { IGetCarsResponse } from './interfaces';
+import { ICar, IGetCarsResponse } from './interfaces';
 
 const maxCarsOnPage = 7;
 
@@ -16,4 +16,8 @@ export const getCars = async (
       };
     },
   );
+};
+
+export const createCar = async (body: ICar): Promise<void> => {
+  await post(`${routes.garage}`, body);
 };

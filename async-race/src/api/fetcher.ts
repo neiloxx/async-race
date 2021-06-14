@@ -1,3 +1,5 @@
+import { ICar } from './interfaces';
+
 const successfulResponsesMin = 200;
 const successfulResponsesMax = 300;
 
@@ -42,7 +44,7 @@ export const patch = (url: string) => {
   });
 };
 
-export const post = (url: string, body: Response): Promise<Response> => {
+export const post = (url: string, body: ICar): Promise<Response> => {
   return fetch(url, {
     method: 'POST',
     body: JSON.stringify(body),
