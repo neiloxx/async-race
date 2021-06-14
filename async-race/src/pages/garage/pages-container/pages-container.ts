@@ -11,7 +11,7 @@ export default class PagesContainer extends ControlArray {
 
   constructor() {
     super('div', 'garage__pages-container');
-    this.prevBtn = new Button(undefined, 'pages__btn', '<', true);
+    this.prevBtn = new Button(undefined, 'pages__btn', '<');
     this.nextBtn = new Button(undefined, 'pages__btn', '>');
 
     const wrapper = new ControlArray('div', 'garage__pages', [
