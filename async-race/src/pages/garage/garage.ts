@@ -4,8 +4,9 @@ import ControlArray from '../../components/elements/control-array';
 import store from '../../store/store';
 import InputsField from './inputs-field/inputs-field';
 import CarsField from './cars-field/cars-field';
-import { createCar } from '../../api/cars';
+import { createCar, updateCar } from '../../api/cars';
 import PagesContainer from './pages-container/pages-container';
+import { ICar } from '../../api/interfaces';
 
 export default class Garage extends Control {
   wrapper?: ControlArray;
@@ -30,23 +31,24 @@ export default class Garage extends Control {
       if (!newCar?.name) throw new Error("There's no new car");
       createCar(newCar).then(async () => {
         await store.getValues();
+        store.createInputNameValue = '';
+        store.createInputColorValue = '#000000';
         this.render();
       });
     };
 
-    if (!this.pages) throw new Error("There's no more pages");
-    this.pages.nextBtn.getNode().onclick = () => {
-      if (store.carsPage * store.maxCarsOnPage < store.carsCount) {
-        store.carsPage++;
-        store.getValues().then(() => this.render());
+    this.inputsField.renderBtn.updateBtn.getNode().onclick = () => {
+      const updatedCar = this.inputsField?.getUpdatedValue();
+      if (store.selectedCar?.id && updatedCar) {
+        updateCar(store.selectedCar?.id, updatedCar).then(async () => {
+          await store.getValues();
+          store.selectedCar = null;
+          this.render();
+        });
       }
     };
-    this.pages.prevBtn.getNode().onclick = () => {
-      if (store.carsPage - 1 >= 1) {
-        store.carsPage--;
-        store.getValues().then(() => this.render());
-      }
-    };
+
+    this.pageHandler();
   }
 
   render(): void {
@@ -61,7 +63,16 @@ export default class Garage extends Control {
     );
     this.pages = new PagesContainer();
 
-    this.carsField = new CarsField(undefined, 'garage__cars-field');
+    this.carsField = new CarsField(
+      undefined,
+      'garage__cars-field',
+      (car: ICar) => {
+        if (car.id) {
+          store.selectedCar = car;
+          this.inputsField?.handleUpdateInputs(car);
+        }
+      },
+    );
     this.startObserve();
 
     this.wrapper = new ControlArray(
@@ -70,5 +81,21 @@ export default class Garage extends Control {
       [this.title, this.pages, this.carsField],
       this.node,
     );
+  }
+
+  pageHandler(): void {
+    if (!this.pages) throw new Error("There's no more pages");
+    this.pages.nextBtn.getNode().onclick = () => {
+      if (store.carsPage * store.maxCarsOnPage < store.carsCount) {
+        store.carsPage++;
+        store.getValues().then(() => this.render());
+      }
+    };
+    this.pages.prevBtn.getNode().onclick = () => {
+      if (store.carsPage - 1 >= 1) {
+        store.carsPage--;
+        store.getValues().then(() => this.render());
+      }
+    };
   }
 }

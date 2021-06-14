@@ -2,35 +2,33 @@ import Control from '../../../../components/elements/control';
 import { ICar } from '../../../../api/interfaces';
 import ControlArray from '../../../../components/elements/control-array';
 import './style.scss';
+import Button from '../../../../components/elements/button/button';
 
-export default class Car extends Control {
+export default class Car extends Control implements ICar {
   wrapper: ControlArray;
 
   name: string;
 
+  color: string;
+
   id?: number;
 
-  constructor(car: ICar) {
+  selectBtn: Button;
+
+  removeBtn: Button;
+
+  constructor(car: ICar, selectCar: (car: ICar) => void = () => {}) {
     super(undefined, 'div', 'cars-field__car');
     this.name = car.name;
+    this.color = car.color;
     this.id = car.id;
 
-    const startBtn = new Control(undefined, 'button', 'car__btn btn', 'Start');
-    const resetBtn = new Control(undefined, 'button', 'car__btn btn', 'Reset');
+    const startBtn = new Button(undefined, 'car__btn btn', 'Start');
+    const resetBtn = new Button(undefined, 'car__btn btn', 'Reset');
     const carName = new Control(undefined, 'p', 'car__text', this.name);
 
-    const selectBtn = new Control(
-      undefined,
-      'button',
-      'car__btn btn',
-      'Select',
-    );
-    const removeBtn = new Control(
-      undefined,
-      'button',
-      'car__btn btn',
-      'Remove',
-    );
+    this.selectBtn = new Button(undefined, 'car__btn btn', 'Select');
+    this.removeBtn = new Button(undefined, 'car__btn btn', 'Remove');
 
     this.wrapper = new ControlArray(
       'div',
@@ -38,12 +36,17 @@ export default class Car extends Control {
       [
         new ControlArray('div', 'car__race', [startBtn, resetBtn, carName]),
         new ControlArray('div', 'car__inner', [
-          new ControlArray('div', 'car__settings', [selectBtn, removeBtn]),
+          new ControlArray('div', 'car__settings', [
+            this.selectBtn,
+            this.removeBtn,
+          ]),
           this.renderCar(car.color),
         ]),
       ],
       this.node,
     );
+
+    this.selectBtn.getNode().onclick = () => selectCar(this);
   }
 
   renderCar = (color: string): Control => {

@@ -52,12 +52,24 @@ export default class InputsField extends Control {
 
   watchInputs(): void {
     this.handleCreateInputs();
+
+    if (store.selectedCar) {
+      this.handleUpdateInputs(store.selectedCar);
+    }
   }
 
   getInputsValue = (): ICar => {
     return {
       name: store.createInputNameValue,
       color: store.createInputColorValue,
+    };
+  };
+
+  getUpdatedValue = (): ICar => {
+    if (!store.selectedCar) throw new Error("There's no selected car");
+    return {
+      name: store.selectedCar.name,
+      color: store.selectedCar.color,
     };
   };
 
@@ -81,6 +93,33 @@ export default class InputsField extends Control {
     this.renderInput.createInputColor.getNode().oninput = (event: Event) => {
       const input = <HTMLInputElement>event.target;
       store.createInputColorValue = input.value;
+    };
+  }
+
+  handleUpdateInputs(car: ICar): void {
+    const inputName =
+      this.renderInput.updateInputName.getNode() as HTMLInputElement;
+    inputName.value = car.name;
+    store.updateInputNameValue = car.name;
+    const inputColor =
+      this.renderInput.updateInputColor.getNode() as HTMLInputElement;
+    inputColor.value = car.color;
+    store.updateInputColorValue = car.color;
+
+    enableBtn(this.renderBtn.updateBtn);
+
+    this.renderInput.updateInputName.getNode().oninput = (event: Event) => {
+      const input = <HTMLInputElement>event.target;
+      enableBtn(this.renderBtn.updateBtn);
+      if (!input.value) {
+        disableBtn(this.renderBtn.updateBtn);
+      }
+      car.name = input.value;
+    };
+
+    this.renderInput.updateInputColor.getNode().oninput = (event: Event) => {
+      const input = <HTMLInputElement>event.target;
+      car.color = input.value;
     };
   }
 }

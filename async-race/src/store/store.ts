@@ -8,9 +8,15 @@ class Store {
 
   carsCount = 0;
 
+  selectedCar: ICar | null = null;
+
   createInputNameValue = '';
 
   createInputColorValue = '#000000';
+
+  updateInputNameValue = '';
+
+  updateInputColorValue = '#000000';
 
   maxCarsOnPage = maxCarsOnPage;
 
