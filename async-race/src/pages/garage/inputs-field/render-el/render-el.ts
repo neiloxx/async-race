@@ -1,5 +1,4 @@
 import Input from '../../../../components/elements/input/input';
-import Control from '../../../../components/elements/control';
 import { IInput, IButton } from './interfaces';
 import Button from '../../../../components/elements/button/button';
 
