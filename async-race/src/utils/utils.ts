@@ -1,6 +1,6 @@
 import Button from '../components/elements/button/button';
 import Control from '../components/elements/control';
-import { ICar } from "../api/interfaces";
+import { ICar } from '../api/interfaces';
 
 const models = [
   'Tesla',
