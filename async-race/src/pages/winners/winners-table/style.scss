@@ -1,0 +1,40 @@
+@import "../../../const/mixins";
+
+.row-wrapper {
+  margin-top: 1rem;
+  display: flex;
+  height: 2rem;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  max-width: 50rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: RGBA(70,90,90,0.56);
+  @include fonts(15px, 400, #ffffff);
+
+  &.table-header {
+    height: 5rem;
+    @include fonts(18px, 500, #ffffff);
+  }
+}
+
+.column {
+  &-wins,
+  &-time {
+    cursor: pointer;
+    width: 20%;
+  }
+
+  &-number {
+    width: 5rem;
+  }
+
+  &-image {
+    width: 25%;
+  }
+
+  &-name {
+    width: 25%;
+  }
+}
