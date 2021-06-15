@@ -4,8 +4,8 @@ import ControlArray from '../../components/elements/control-array';
 import store from '../../store/store';
 import InputsField from './inputs-field/inputs-field';
 import CarsField from './cars-field/cars-field';
-import { createCar, deleteCar, updateCar } from '../../api/cars';
-import PagesContainer from './pages-container/pages-container';
+import { createCar, deleteCar, deleteWinner, updateCar } from '../../api/cars';
+import PagesContainer from '../../components/elements/pages-container/pages-container';
 import { ICar } from '../../api/interfaces';
 import { generateRandomCars } from '../../utils/utils';
 
@@ -63,7 +63,7 @@ export default class Garage extends Control {
       'garage__title',
       `garage(${store.carsCount})`,
     );
-    this.pages = new PagesContainer();
+    this.pages = new PagesContainer('garage', store.garagePage);
 
     this.carsField = new CarsField(
       undefined,
@@ -77,6 +77,7 @@ export default class Garage extends Control {
       (car: ICar) => {
         if (car.id) {
           deleteCar(car.id).then(async () => {
+            if (car.id) await deleteWinner(car.id);
             await store.getValues();
             this.render();
           });
@@ -96,14 +97,14 @@ export default class Garage extends Control {
   pageHandler(): void {
     if (!this.pages) throw new Error("There's no more pages");
     this.pages.nextBtn.getNode().onclick = () => {
-      if (store.carsPage * store.maxCarsOnPage < store.carsCount) {
-        store.carsPage++;
+      if (store.garagePage * store.maxCarsOnPage < store.carsCount) {
+        store.garagePage++;
         store.getValues().then(() => this.render());
       }
     };
     this.pages.prevBtn.getNode().onclick = () => {
-      if (store.carsPage - 1 >= 1) {
-        store.carsPage--;
+      if (store.garagePage - 1 >= 1) {
+        store.garagePage--;
         store.getValues().then(() => this.render());
       }
     };
