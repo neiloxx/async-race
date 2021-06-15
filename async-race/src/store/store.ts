@@ -21,6 +21,10 @@ class Store {
 
   winnerNumber = 1;
 
+  sortBy: 'wins' | 'time' | '' = '';
+
+  sortOrder: 'ASC' | 'DESC' | '' = '';
+
   selectedCar: ICar | null = null;
 
   createInputNameValue = '';
@@ -40,7 +44,12 @@ class Store {
       this.cars = res.items;
       this.carsCount = res.count;
     });
-    await getWinners(this.winnersPage).then(res => {
+    await getWinners(
+      this.winnersPage,
+      this.maxWinnersOnPage,
+      this.sortBy,
+      this.sortOrder,
+    ).then(res => {
       this.winners = res.items;
       this.winnersCount = res.count;
     });

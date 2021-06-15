@@ -40,16 +40,25 @@ export const deleteWinner = async (id: number): Promise<void> => {
   await del(`${routes.winners}/${id}`);
 };
 
+export const getSortOrder = (sort: string, order: string) => {
+  return sort && order ? `&_sort=${sort}&_order=${order}` : '';
+};
+
 export const getWinners = async (
   page: number,
   limit: number = maxWinnersOnPage,
+  sort: string,
+  order: string,
 ): Promise<IGetWinnersResponse> => {
-  return get(`${routes.winners}?_page=${page}&_limit=${limit}`).then(
-    async res => {
-      return {
-        items: await res.json(),
-        count: +(res.headers.get('X-Total-Count') || 0),
-      };
-    },
-  );
+  return get(
+    `${routes.winners}?_page=${page}&_limit=${limit}${getSortOrder(
+      sort,
+      order,
+    )}`,
+  ).then(async res => {
+    return {
+      items: await res.json(),
+      count: +(res.headers.get('X-Total-Count') || 0),
+    };
+  });
 };

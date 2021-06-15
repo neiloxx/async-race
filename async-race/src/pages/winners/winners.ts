@@ -25,22 +25,24 @@ export default class Winners extends Control {
 
   startObserve(): void {
     this.pageHandler();
+    this.handleSortButtons();
   }
 
-  pageHandler(): void {
-    if (!this.pages) throw new Error("There's no more pages");
-    this.pages.nextBtn.getNode().onclick = () => {
-      if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
-        store.winnersPage++;
+  handleSortButtons(): void {
+    if (this.totalWins)
+      this.totalWins.getNode().onclick = () => {
+        store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+        store.sortBy = 'wins';
+        store.winnerNumber = 1;
         store.getValues().then(() => this.render());
-      }
-    };
-    this.pages.prevBtn.getNode().onclick = () => {
-      if (store.winnersPage - 1 >= 1) {
-        store.winnersPage--;
+      };
+    if (this.bestTime)
+      this.bestTime.getNode().onclick = () => {
+        store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+        store.sortBy = 'time';
+        store.winnerNumber = 1;
         store.getValues().then(() => this.render());
-      }
-    };
+      };
   }
 
   render(): void {
@@ -84,5 +86,21 @@ export default class Winners extends Control {
       this.node,
     );
     this.startObserve();
+  }
+
+  pageHandler(): void {
+    if (!this.pages) throw new Error("There's no more pages");
+    this.pages.nextBtn.getNode().onclick = () => {
+      if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
+        store.winnersPage++;
+        store.getValues().then(() => this.render());
+      }
+    };
+    this.pages.prevBtn.getNode().onclick = () => {
+      if (store.winnersPage - 1 >= 1) {
+        store.winnersPage--;
+        store.getValues().then(() => this.render());
+      }
+    };
   }
 }
