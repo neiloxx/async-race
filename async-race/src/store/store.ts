@@ -1,12 +1,25 @@
-import { getCars, maxCarsOnPage } from '../api/cars';
-import { ICar } from '../api/interfaces';
+import {
+  getCars,
+  getWinners,
+  maxCarsOnPage,
+  maxWinnersOnPage,
+} from '../api/cars';
+import { ICar, IWinner } from '../api/interfaces';
 
 class Store {
-  carsPage = 1;
+  garagePage = 1;
 
   cars: Array<ICar> = [];
 
   carsCount = 0;
+
+  winnersPage = 1;
+
+  winners: Array<IWinner> = [];
+
+  winnersCount = 0;
+
+  winnerNumber = 1;
 
   selectedCar: ICar | null = null;
 
@@ -20,10 +33,16 @@ class Store {
 
   maxCarsOnPage = maxCarsOnPage;
 
+  maxWinnersOnPage = maxWinnersOnPage;
+
   async getValues(): Promise<void> {
-    await getCars(this.carsPage).then(res => {
+    await getCars(this.garagePage).then(res => {
       this.cars = res.items;
       this.carsCount = res.count;
+    });
+    await getWinners(this.winnersPage).then(res => {
+      this.winners = res.items;
+      this.winnersCount = res.count;
     });
   }
 }
