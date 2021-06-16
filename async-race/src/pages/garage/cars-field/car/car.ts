@@ -43,7 +43,7 @@ export default class Car extends Control implements ICar {
     this.color = car.color;
     this.id = car.id;
     this.startBtn = new Button(undefined, 'car__btn btn', 'Start');
-    this.resetBtn = new Button(undefined, 'car__btn btn', 'Reset');
+    this.resetBtn = new Button(undefined, 'car__btn btn reset', 'Reset', true);
     const carName = new Control(undefined, 'p', 'car__text', this.name);
 
     this.selectBtn = new Button(undefined, 'car__btn btn', 'Select');
@@ -80,6 +80,7 @@ export default class Car extends Control implements ICar {
 
   handleStartCar(): void {
     this.startBtn.getNode().onclick = async () => {
+      enableBtn([this.resetBtn.getNode()]);
       disableBtn([this.startBtn.getNode()]);
       if (!this.id || !this.image) return;
       startDriving(this.id).catch();
@@ -89,7 +90,10 @@ export default class Car extends Control implements ICar {
   handleResetCar(): void {
     this.resetBtn.getNode().onclick = async () => {
       stopDriving(this.id || 0)
-        .then(() => enableBtn([this.startBtn.getNode()]))
+        .then(() => {
+          enableBtn([this.startBtn.getNode()]);
+          disableBtn([this.resetBtn.getNode()]);
+        })
         .catch();
     };
   }

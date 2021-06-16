@@ -80,12 +80,15 @@ export default class Garage extends Control {
       let flag = false;
       this.disableBtns();
       Promise.all(store.cars.map(car => startEngine(car.id || 0))).then(() => {
+        if (this.inputsField) disableBtn([this.inputsField.raceBtn.getNode()]);
         Promise.all(
           store.cars.map(car =>
             startDriving(car.id || 0)
               .then(state => {
                 const winTime = state.animationTime / msInSecond;
                 if (state.success && !flag) {
+                  if (this.inputsField)
+                    enableBtn([this.inputsField.resetBtn.getNode()]);
                   const winnerCar = store.cars.find(c => c.id === state.id);
                   let winner = store.winners.find(c => c.id === state.id);
                   if (!winner && winnerCar?.id) {
@@ -114,8 +117,6 @@ export default class Garage extends Control {
                         this.popup.getNode().style.display = 'none';
                     }, timeActivePopup);
                   }
-                  if (this.inputsField)
-                    enableBtn([this.inputsField.resetBtn.getNode()]);
                 }
               })
               .catch(() => {}),
@@ -132,7 +133,10 @@ export default class Garage extends Control {
         store.cars.map(async car => {
           await stopDriving(car.id || 0);
         }),
-      ).then(() => this.enableBtns());
+      ).then(() => {
+        if (this.inputsField) disableBtn([this.inputsField.resetBtn.getNode()]);
+        this.enableBtns();
+      });
     };
   }
 
@@ -220,13 +224,14 @@ export default class Garage extends Control {
 
   enableBtns(): void {
     if (!this.pages || !this.inputsField) return;
-    document.querySelectorAll('.car__btn').forEach(el => enableBtn([el]));
+    document
+      .querySelectorAll('.car__btn')
+      .forEach(el => (el.classList.contains('reset') ? el : enableBtn([el])));
     enableBtn([
       this.pages.nextBtn.getNode(),
       this.pages.prevBtn.getNode(),
       this.inputsField.raceBtn.getNode(),
       this.inputsField.createRandom.getNode(),
-      this.inputsField.resetBtn.getNode(),
       this.inputsField.createInput.getNode(),
       this.inputsField.updateInput.getNode(),
     ]);
