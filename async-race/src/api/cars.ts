@@ -48,7 +48,7 @@ export const deleteWinner = async (id: number): Promise<void> => {
   await del(`${routes.winners}/${id}`);
 };
 
-export const getSortOrder = (sort: string, order: string) => {
+export const getSortOrder = (sort: string, order: string): string => {
   return sort && order ? `&_sort=${sort}&_order=${order}` : '';
 };
 

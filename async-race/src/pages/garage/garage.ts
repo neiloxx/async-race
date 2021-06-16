@@ -106,12 +106,13 @@ export default class Garage extends Control {
                   }
                   flag = true;
                   if (this.popup) {
+                    const timeActivePopup = 3000;
                     this.popup.getNode().innerText = `${winnerCar?.name} won with ${winTime}s`;
                     this.popup.getNode().style.display = 'flex';
                     setTimeout(() => {
                       if (this.popup)
                         this.popup.getNode().style.display = 'none';
-                    }, msInSecond * 3);
+                    }, timeActivePopup);
                   }
                   if (this.inputsField)
                     enableBtn([this.inputsField.resetBtn.getNode()]);

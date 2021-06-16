@@ -71,20 +71,6 @@ export const enableBtn = (btns: Array<HTMLElement | Element>): void => {
   btns.forEach(btn => btn.removeAttribute('disabled'));
 };
 
-export const getPositionAtCentre = (el: HTMLElement) => {
-  const { top, left, width, height } = el.getBoundingClientRect();
-  return {
-    x: left + width / 2,
-    y: top + height / 2,
-  };
-};
-
-export const getDistance = (a: HTMLElement, b: HTMLElement): number => {
-  const positionA = getPositionAtCentre(a);
-  const positionB = getPositionAtCentre(b);
-  return Math.hypot(positionA.x - positionB.x, positionA.y - positionB.y);
-};
-
 export const animate = (
   carId: number,
   car: HTMLElement,

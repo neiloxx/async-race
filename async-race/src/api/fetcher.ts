@@ -16,12 +16,6 @@ export const del = (url: string): Promise<Response> => {
   });
 };
 
-export const patch = (url: string) => {
-  return fetch(url, {
-    method: 'PATCH',
-  });
-};
-
 export const post = (url: string, body: ICar | IWinner): Promise<Response> => {
   return fetch(url, {
     method: 'POST',
