@@ -1,6 +1,5 @@
 import ControlArray from '../control-array';
 import Control from '../control';
-import store from '../../../store/store';
 import Button from '../button/button';
 import './style.scss';
 
@@ -15,7 +14,7 @@ export default class PagesContainer extends ControlArray {
     this.nextBtn = new Button(undefined, 'pages__btn', '>');
 
     const wrapper = new ControlArray('div', `${element}__pages`, [
-      new Control(undefined, 'h3', 'garage__subtitle', `Page #${numPage}`),
+      new Control(undefined, 'h3', `${element}__subtitle`, `Page #${numPage}`),
       new ControlArray('div', 'pages__buttons', [this.prevBtn, this.nextBtn]),
     ]);
     this.node.appendChild(wrapper.getNode());
