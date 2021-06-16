@@ -135,37 +135,6 @@ export const stopDriving = async (id: number): Promise<void> => {
   window.cancelAnimationFrame(store.animation[id].step);
   if (car) car.style.left = '0';
 };
-//
-// export const raceAll = async (
-//   promises: Array<IRace>,
-//   idxs: Array<number>,
-// ) => {
-//   const { success, id, time }: ICar | number = await Promise.race(promises);
-//   const ms = 1000;
-//   if (!success) {
-//     const failedCarIdx = idxs.findIndex(idx => idx === id);
-//     const restPromises = [
-//       ...promises.slice(0, failedCarIdx),
-//       ...promises.slice(failedCarIdx + 1),
-//       promises.length,
-//     ];
-//     const restIdxs = [
-//       ...idxs.slice(0, failedCarIdx),
-//       ...idxs.slice(failedCarIdx + 1),
-//       idxs.length,
-//     ];
-//     return raceAll(restPromises, restIdxs);
-//   }
-//   return { ...store.cars.find(car => car.id), time: +(time / ms).toFixed(2) };
-// };
-//
-// export const race = async (action: (id?: number) => void) => {
-//   const promises = store.cars.map(({ id }) => action(id));
-//   return await raceAll(
-//     promises,
-//     store.cars.map(car => car.id),
-//   );
-// };
 
 export const renderCar = (
   id: number,
