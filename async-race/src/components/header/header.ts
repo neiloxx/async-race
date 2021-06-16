@@ -23,7 +23,6 @@ export default class Header extends Control {
         new ControlArray('nav', 'header__nav nav', [
           new ControlArray('ul', 'nav-list', [garageItem, winnersItem]),
         ]),
-        new Link(undefined, 'settings', '#settings'),
       ],
       this.node,
     );
