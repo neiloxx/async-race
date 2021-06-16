@@ -1,22 +1,17 @@
 import Control from '../../../../components/elements/control';
 import { ICar, IWinner } from '../../../../api/interfaces';
-import store from '../../../../store/store';
 import { renderCar } from '../../../../utils/utils';
 
 export default class Winner extends Control {
-  counter = store.winnerNumber;
+  num: number;
 
-  constructor(winner: IWinner, car: ICar) {
+  constructor(num: number, winner: IWinner, car: ICar) {
     super(undefined, 'div', 'row-wrapper');
-    store.winnerNumber++;
-    const number = new Control(
-      undefined,
-      'div',
-      'column-number',
-      `${this.counter}`,
-    );
+    this.num = num;
 
-    const image = renderCar(car.color, 'column-image');
+    const number = new Control(undefined, 'div', 'column-number', `${num}`);
+
+    const image = renderCar(car.id || 0, car.color, 'column-image');
 
     const name = new Control(undefined, 'div', 'column-name', `${car.name}`);
 
@@ -26,7 +21,7 @@ export default class Winner extends Control {
 
     this.node.append(
       number.getNode(),
-      image.getNode(),
+      image.imageEl.getNode(),
       name.getNode(),
       wins.getNode(),
       time.getNode(),

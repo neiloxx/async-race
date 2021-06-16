@@ -18,9 +18,12 @@ export default class Winners extends Control {
 
   constructor(parent: HTMLElement) {
     super(parent, 'section', 'winners');
-    store.winnerNumber = 1;
     this.render();
     this.pageHandler();
+    store.onWinnersUpdate = () => {
+      store.winnerNumber = 1;
+      this.render();
+    };
   }
 
   startObserve(): void {

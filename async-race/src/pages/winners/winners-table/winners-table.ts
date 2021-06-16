@@ -10,7 +10,11 @@ export default class WinnersTable extends Control {
     super(undefined, 'div', 'table');
     for (let i = 0; i < store.winners.length; i++) {
       this.getCar(store.winners[i].id).then(res => {
-        this.node.appendChild(new Winner(store.winners[i], res).getNode());
+        const number =
+          (store.winnersPage - 1) * store.maxWinnersOnPage + (i + 1);
+        this.node.appendChild(
+          new Winner(number, store.winners[i], res).getNode(),
+        );
       });
     }
   }
