@@ -22,6 +22,7 @@ import {
   startDriving,
   stopDriving,
 } from '../../utils/utils';
+import PopUp from './popup/popup';
 
 const msInSecond = 1000;
 
@@ -36,7 +37,9 @@ export default class Garage extends Control {
 
   pages?: PagesContainer;
 
-  constructor(parent: HTMLElement) {
+  popup?: PopUp;
+
+  constructor(parent?: HTMLElement) {
     super(parent, 'section', 'garage');
     this.render();
   }
@@ -102,7 +105,14 @@ export default class Garage extends Control {
                     });
                   }
                   flag = true;
-                  alert(`${winnerCar?.name} won with ${winTime}s`);
+                  if (this.popup) {
+                    this.popup.getNode().innerText = `${winnerCar?.name} won with ${winTime}s`;
+                    this.popup.getNode().style.display = 'flex';
+                    setTimeout(() => {
+                      if (this.popup)
+                        this.popup.getNode().style.display = 'none';
+                    }, msInSecond * 3);
+                  }
                   if (this.inputsField)
                     enableBtn([this.inputsField.resetBtn.getNode()]);
                 }
@@ -164,6 +174,7 @@ export default class Garage extends Control {
       [this.title, this.pages, this.carsField],
       this.node,
     );
+    this.popup = new PopUp(this.node);
   }
 
   pageHandler(): void {

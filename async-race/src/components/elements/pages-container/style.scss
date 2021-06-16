@@ -19,6 +19,25 @@
     @include fonts(16px, 400, #ffffff);
   }
 }
+.winners {
+  &__pages {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__subtitle {
+    @include fonts(16px, 400, #ffffff);
+  }
+}
 
 .pages {
   &__buttons {

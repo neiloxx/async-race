@@ -35,7 +35,7 @@
   &__image {
     position: relative;
     height: 4rem;
-    width: 80%;
+    width: calc(85% - 5rem);
     border-bottom: .5rem dashed #fff;
   }
 
