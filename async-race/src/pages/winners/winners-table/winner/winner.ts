@@ -11,7 +11,7 @@ export default class Winner extends Control {
 
     const number = new Control(undefined, 'div', 'column-number', `${num}`);
 
-    const image = renderCar(car.id || 0, car.color, 'column-image');
+    const image = renderCar(car.id || 0, car.color, 'column-image', true);
 
     const name = new Control(undefined, 'div', 'column-name', `${car.name}`);
 

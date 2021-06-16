@@ -8,15 +8,17 @@ import { ICar } from '../../../api/interfaces';
 export default class WinnersTable extends Control {
   constructor() {
     super(undefined, 'div', 'table');
-    for (let i = 0; i < store.winners.length; i++) {
-      this.getCar(store.winners[i].id).then(res => {
-        const number =
-          (store.winnersPage - 1) * store.maxWinnersOnPage + (i + 1);
-        this.node.appendChild(
-          new Winner(number, store.winners[i], res).getNode(),
-        );
-      });
-    }
+    Promise.all(store.winners.map(winner => getCar(winner.id))).then(
+      winners => {
+        winners.forEach((winner, idx) => {
+          const number =
+            (store.winnersPage - 1) * store.maxWinnersOnPage + (idx + 1);
+          this.node.appendChild(
+            new Winner(number, store.winners[idx], winner).getNode(),
+          );
+        });
+      },
+    );
   }
 
   getCar = async (id: number): Promise<ICar> => {

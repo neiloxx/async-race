@@ -16,7 +16,7 @@ export default class Winners extends Control {
 
   pages?: PagesContainer;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent?: HTMLElement) {
     super(parent, 'section', 'winners');
     this.render();
     this.pageHandler();
@@ -36,14 +36,14 @@ export default class Winners extends Control {
       this.totalWins.getNode().onclick = () => {
         store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
         store.sortBy = 'wins';
-        store.winnerNumber = 1;
+        // store.winnerNumber = 1;
         store.getValues().then(() => this.render());
       };
     if (this.bestTime)
       this.bestTime.getNode().onclick = () => {
         store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
         store.sortBy = 'time';
-        store.winnerNumber = 1;
+        // store.winnerNumber = 1;
         store.getValues().then(() => this.render());
       };
   }
