@@ -3,7 +3,6 @@ import Header from './components/header/header';
 import './style.scss';
 import Garage from './pages/garage/garage';
 import Winners from './pages/winners/winners';
-import Settings from './pages/settings/settings';
 import store from './store/store';
 
 class App {
@@ -24,9 +23,13 @@ const app = new App(document.body);
 const routerView = app.main.node;
 const links = document.querySelectorAll('.nav-list__item-link');
 
+let winnersPage: Winners;
+let garagePage: Garage;
+
 app.getAsync().then(() => {
   const onRouteChanged = (): Control => {
     const { hash } = window.location;
+    store.getValues();
     if (!(routerView instanceof HTMLElement)) {
       throw new ReferenceError(
         'No router view element available for rendering',
@@ -47,13 +50,26 @@ app.getAsync().then(() => {
     });
     switch (hash) {
       case '':
-        return new Garage(routerView);
+        if (!garagePage) {
+          garagePage = new Garage(routerView);
+          return garagePage;
+        }
+        garagePage.replaceParent(routerView);
+        return garagePage;
       case '#winners':
-        return new Winners(routerView);
-      case '#settings':
-        return new Settings(routerView);
+        if (!winnersPage) {
+          winnersPage = new Winners(routerView);
+          return winnersPage;
+        }
+        winnersPage.replaceParent(routerView);
+        return winnersPage;
       default:
-        return new Garage(routerView);
+        if (!garagePage) {
+          garagePage = new Garage(routerView);
+          return garagePage;
+        }
+        garagePage.replaceParent(routerView);
+        return garagePage;
     }
   };
 

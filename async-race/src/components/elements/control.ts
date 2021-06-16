@@ -24,6 +24,11 @@ export default class Control {
     }
   }
 
+  replaceParent(parent: HTMLElement): void {
+    this.parent = parent;
+    this.parent.appendChild(this.node);
+  }
+
   public getNode(): HTMLElement {
     return this.node;
   }

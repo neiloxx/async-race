@@ -4,10 +4,26 @@ import ControlArray from '../../components/elements/control-array';
 import store from '../../store/store';
 import InputsField from './inputs-field/inputs-field';
 import CarsField from './cars-field/cars-field';
-import { createCar, deleteCar, deleteWinner, updateCar } from '../../api/cars';
+import {
+  createCar,
+  createWinner,
+  deleteCar,
+  deleteWinner,
+  startEngine,
+  updateCar,
+  updateWinner,
+} from '../../api/cars';
 import PagesContainer from '../../components/elements/pages-container/pages-container';
 import { ICar } from '../../api/interfaces';
-import { generateRandomCars } from '../../utils/utils';
+import {
+  disableBtn,
+  enableBtn,
+  generateRandomCars,
+  startDriving,
+  stopDriving,
+} from '../../utils/utils';
+
+const msInSecond = 1000;
 
 export default class Garage extends Control {
   wrapper?: ControlArray;
@@ -51,6 +67,62 @@ export default class Garage extends Control {
 
     this.createRandomCars();
     this.pageHandler();
+    this.handleRaceBtn();
+    this.handleResetBtn();
+  }
+
+  handleRaceBtn(): void {
+    if (!this.inputsField) throw new Error("There's no render elements");
+    this.inputsField.raceBtn.getNode().onclick = async () => {
+      let flag = false;
+      this.disableBtns();
+      Promise.all(store.cars.map(car => startEngine(car.id || 0))).then(() => {
+        Promise.all(
+          store.cars.map(car =>
+            startDriving(car.id || 0)
+              .then(state => {
+                const winTime = state.animationTime / msInSecond;
+                if (state.success && !flag) {
+                  const winnerCar = store.cars.find(c => c.id === state.id);
+                  let winner = store.winners.find(c => c.id === state.id);
+                  if (!winner && winnerCar?.id) {
+                    winner = {
+                      id: winnerCar.id,
+                      wins: 1,
+                      time: winTime,
+                    };
+                    createWinner(winner).then(() => {
+                      store.getValues();
+                    });
+                  } else if (winner) {
+                    winner.wins++;
+                    if (winner.time > winTime) winner.time = winTime;
+                    updateWinner(winner).then(() => {
+                      store.getValues();
+                    });
+                  }
+                  flag = true;
+                  alert(`${winnerCar?.name} won with ${winTime}s`);
+                  if (this.inputsField)
+                    enableBtn([this.inputsField.resetBtn.getNode()]);
+                }
+              })
+              .catch(() => {}),
+          ),
+        );
+      });
+    };
+  }
+
+  handleResetBtn(): void {
+    if (!this.inputsField) throw new Error("There's no render elements");
+    this.inputsField.resetBtn.getNode().onclick = () => {
+      Promise.all(
+        store.cars.map(async car => {
+          await stopDriving(car.id || 0);
+        }),
+      ).then(() => this.enableBtns());
+    };
   }
 
   render(): void {
@@ -118,5 +190,33 @@ export default class Garage extends Control {
       await store.getValues();
       this.render();
     };
+  }
+
+  disableBtns(): void {
+    if (!this.pages || !this.inputsField) return;
+    document.querySelectorAll('.car__btn').forEach(el => disableBtn([el]));
+    disableBtn([
+      this.pages.nextBtn.getNode(),
+      this.pages.prevBtn.getNode(),
+      this.inputsField.raceBtn.getNode(),
+      this.inputsField.createRandom.getNode(),
+      this.inputsField.resetBtn.getNode(),
+      this.inputsField.createInput.getNode(),
+      this.inputsField.updateInput.getNode(),
+    ]);
+  }
+
+  enableBtns(): void {
+    if (!this.pages || !this.inputsField) return;
+    document.querySelectorAll('.car__btn').forEach(el => enableBtn([el]));
+    enableBtn([
+      this.pages.nextBtn.getNode(),
+      this.pages.prevBtn.getNode(),
+      this.inputsField.raceBtn.getNode(),
+      this.inputsField.createRandom.getNode(),
+      this.inputsField.resetBtn.getNode(),
+      this.inputsField.createInput.getNode(),
+      this.inputsField.updateInput.getNode(),
+    ]);
   }
 }

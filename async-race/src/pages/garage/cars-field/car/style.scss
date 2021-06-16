@@ -29,9 +29,11 @@
   &__inner {
     display: flex;
     align-items: flex-end;
+    width: 100%;
   }
 
   &__image {
+    position: relative;
     height: 4rem;
     width: 80%;
     border-bottom: .5rem dashed #fff;
@@ -47,4 +49,12 @@
   &__text {
     @include fonts(18px, 500, #fff)
   }
+}
+
+.car {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  will-change: left;
+  transform: translateX(0);
 }

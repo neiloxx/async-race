@@ -28,6 +28,10 @@ export default class InputsField extends Control {
 
   createRandom = this.renderBtn.createRandom;
 
+  createInput = this.renderInput.createInputName;
+
+  updateInput = this.renderInput.updateInputName;
+
   constructor(
     parent: HTMLElement,
     tagName: keyof HTMLElementTagNameMap,
@@ -46,7 +50,7 @@ export default class InputsField extends Control {
       this.node,
     );
     if (this.createValue) {
-      enableBtn(this.renderBtn.createBtn);
+      enableBtn([this.renderBtn.createBtn.getNode()]);
     }
 
     this.updateWrapper = new ControlArray(
@@ -102,9 +106,9 @@ export default class InputsField extends Control {
     this.renderInput.createInputName.getNode().oninput = (event: Event) => {
       const input = <HTMLInputElement>event.target;
       store.createInputNameValue = input.value;
-      enableBtn(this.renderBtn.createBtn);
+      enableBtn([this.renderBtn.createBtn.getNode()]);
       if (!store.createInputNameValue) {
-        disableBtn(this.renderBtn.createBtn);
+        disableBtn([this.renderBtn.createBtn.getNode()]);
       }
     };
 
@@ -124,13 +128,13 @@ export default class InputsField extends Control {
     inputColor.value = car.color;
     store.updateInputColorValue = car.color;
 
-    enableBtn(this.renderBtn.updateBtn);
+    enableBtn([this.renderBtn.updateBtn.getNode()]);
 
     this.renderInput.updateInputName.getNode().oninput = (event: Event) => {
       const input = <HTMLInputElement>event.target;
-      enableBtn(this.renderBtn.updateBtn);
+      enableBtn([this.renderBtn.updateBtn.getNode()]);
       if (!input.value) {
-        disableBtn(this.renderBtn.updateBtn);
+        disableBtn([this.renderBtn.updateBtn.getNode()]);
       }
       car.name = input.value;
     };

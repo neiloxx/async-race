@@ -32,6 +32,11 @@
 
   &-image {
     width: 25%;
+    position: relative;
+
+    &> svg {
+      position: relative;
+    }
   }
 
   &-name {

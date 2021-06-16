@@ -6,6 +6,14 @@ import {
 } from '../api/cars';
 import { ICar, IWinner } from '../api/interfaces';
 
+export interface IState {
+  step: number;
+}
+
+export interface IAnimationMap {
+  [key: string]: IState;
+}
+
 class Store {
   garagePage = 1;
 
@@ -39,6 +47,10 @@ class Store {
 
   maxWinnersOnPage = maxWinnersOnPage;
 
+  animation: IAnimationMap = {};
+
+  onWinnersUpdate?: () => void;
+
   async getValues(): Promise<void> {
     await getCars(this.garagePage).then(res => {
       this.cars = res.items;
@@ -52,6 +64,9 @@ class Store {
     ).then(res => {
       this.winners = res.items;
       this.winnersCount = res.count;
+      if (this.onWinnersUpdate) {
+        this.onWinnersUpdate();
+      }
     });
   }
 }
