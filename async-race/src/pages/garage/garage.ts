@@ -118,10 +118,23 @@ export default class Garage extends Control {
                     }, timeActivePopup);
                   }
                 }
+                return state.success;
               })
               .catch(() => {}),
           ),
-        );
+        ).then(states => {
+          if (this.inputsField && states.every(state => state === false)) {
+            enableBtn([this.inputsField.resetBtn.getNode()]);
+            if (this.popup) {
+              const timeActivePopup = 3000;
+              this.popup.getNode().innerText = `All cars are broken`;
+              this.popup.getNode().style.display = 'flex';
+              setTimeout(() => {
+                if (this.popup) this.popup.getNode().style.display = 'none';
+              }, timeActivePopup);
+            }
+          }
+        });
       });
     };
   }
