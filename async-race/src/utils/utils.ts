@@ -1,4 +1,3 @@
-import Button from '../components/elements/button/button';
 import Control from '../components/elements/control';
 import { ICar } from '../api/interfaces';
 import { drive, startEngine, stopEngine } from '../api/cars';

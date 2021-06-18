@@ -1,6 +1,5 @@
 import './style.scss';
 import Control from '../elements/control';
-import Link from '../elements/link/link';
 import ControlArray from '../elements/control-array';
 
 export default class Header extends Control {
