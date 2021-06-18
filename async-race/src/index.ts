@@ -4,7 +4,7 @@ import './style.scss';
 import Garage from './pages/garage/garage';
 import Winners from './pages/winners/winners';
 import store from './store/store';
-import { pageHandler } from './utils/utils';
+import { pageHandler } from './components/elements/pages-container/page-handler';
 
 class App {
   header: Header;

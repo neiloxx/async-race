@@ -1,4 +1,4 @@
-@import "../../../const/mixins";
+@import '../../../const/mixins';
 
 .row-wrapper {
   margin-top: 1rem;
@@ -10,7 +10,7 @@
   max-width: 50rem;
   width: 100%;
   padding: 1rem;
-  background-color: RGBA(70,90,90,0.56);
+  background-color: RGBA(70, 90, 90, 0.56);
   @include fonts(15px, 400, #ffffff);
 
   &.table-header {
@@ -34,7 +34,7 @@
     width: 25%;
     position: relative;
 
-    &> svg {
+    & > svg {
       position: relative;
     }
   }

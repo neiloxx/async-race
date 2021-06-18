@@ -15,7 +15,7 @@
       content: '';
       position: absolute;
       top: 3.5rem;
-      height: .2rem;
+      height: 0.2rem;
       width: 100%;
       background-color: #f2f2f2;
     }
@@ -36,7 +36,7 @@
     position: relative;
     height: 4rem;
     width: calc(85% - 5rem);
-    border-bottom: .5rem dashed #fff;
+    border-bottom: 0.5rem dashed #fff;
   }
 
   &__btn {
@@ -47,7 +47,7 @@
   }
 
   &__text {
-    @include fonts(18px, 500, #fff)
+    @include fonts(18px, 500, #fff);
   }
 }
 

@@ -103,8 +103,6 @@ export default class InputsField extends Control {
   };
 
   handleCreateInputs(): void {
-
-
     this.renderInput.createInputColor.getNode().oninput = (event: Event) => {
       const input = <HTMLInputElement>event.target;
       store.createInputColorValue = input.value;

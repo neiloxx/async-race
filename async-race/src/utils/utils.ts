@@ -2,9 +2,6 @@ import Control from '../components/elements/control';
 import { ICar } from '../api/interfaces';
 import { drive, startEngine, stopEngine } from '../api/cars';
 import store, { IState } from '../store/store';
-import PagesContainer from '../components/elements/pages-container/pages-container';
-import Garage from '../pages/garage/garage';
-import Winners from '../pages/winners/winners';
 
 export interface IRenderCar {
   imageEl: Control;
@@ -138,23 +135,4 @@ export const renderCar = (
 `;
   const imageEl = new Control(undefined, 'div', className, svg);
   return { imageEl };
-};
-
-export const pageHandler = (
-  parent: Garage | Winners,
-  pages?: PagesContainer,
-): void => {
-  if (!pages) throw new Error("There's no more pages");
-  pages.nextBtn.getNode().onclick = () => {
-    if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
-      store.winnersPage++;
-      store.getValues().then(() => parent.render());
-    }
-  };
-  pages.prevBtn.getNode().onclick = () => {
-    if (store.winnersPage - 1 >= 1) {
-      store.winnersPage--;
-      store.getValues().then(() => parent.render());
-    }
-  };
 };
