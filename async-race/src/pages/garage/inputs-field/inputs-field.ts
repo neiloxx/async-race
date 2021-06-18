@@ -5,7 +5,6 @@ import './style.scss';
 import { ICar } from '../../../api/interfaces';
 import store from '../../../store/store';
 import { disableBtn, enableBtn } from '../../../utils/utils';
-import Button from '../../../components/elements/button/button';
 
 export default class InputsField extends Control {
   createWrapper: ControlArray;
@@ -73,6 +72,14 @@ export default class InputsField extends Control {
   }
 
   watchInputs(): void {
+    this.renderInput.createInputName.getNode().oninput = (event: Event) => {
+      const input = <HTMLInputElement>event.target;
+      store.createInputNameValue = input.value;
+      enableBtn([this.renderBtn.createBtn.getNode()]);
+      if (!store.createInputNameValue) {
+        disableBtn([this.renderBtn.createBtn.getNode()]);
+      }
+    };
     this.handleCreateInputs();
 
     if (store.selectedCar) {
@@ -96,21 +103,7 @@ export default class InputsField extends Control {
   };
 
   handleCreateInputs(): void {
-    const inputName =
-      this.renderInput.createInputName.getNode() as HTMLInputElement;
-    inputName.value = this.createValue;
-    const inputColor =
-      this.renderInput.createInputColor.getNode() as HTMLInputElement;
-    inputColor.value = this.createColor;
 
-    this.renderInput.createInputName.getNode().oninput = (event: Event) => {
-      const input = <HTMLInputElement>event.target;
-      store.createInputNameValue = input.value;
-      enableBtn([this.renderBtn.createBtn.getNode()]);
-      if (!store.createInputNameValue) {
-        disableBtn([this.renderBtn.createBtn.getNode()]);
-      }
-    };
 
     this.renderInput.createInputColor.getNode().oninput = (event: Event) => {
       const input = <HTMLInputElement>event.target;

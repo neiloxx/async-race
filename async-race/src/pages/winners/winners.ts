@@ -19,7 +19,6 @@ export default class Winners extends Control {
   constructor(parent?: HTMLElement) {
     super(parent, 'section', 'winners');
     this.render();
-    this.pageHandler();
     store.onWinnersUpdate = () => {
       store.winnerNumber = 1;
       this.render();
@@ -27,7 +26,6 @@ export default class Winners extends Control {
   }
 
   startObserve(): void {
-    this.pageHandler();
     this.handleSortButtons();
   }
 
@@ -36,14 +34,12 @@ export default class Winners extends Control {
       this.totalWins.getNode().onclick = () => {
         store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
         store.sortBy = 'wins';
-        // store.winnerNumber = 1;
         store.getValues().then(() => this.render());
       };
     if (this.bestTime)
       this.bestTime.getNode().onclick = () => {
         store.sortOrder = store.sortOrder === 'ASC' ? 'DESC' : 'ASC';
         store.sortBy = 'time';
-        // store.winnerNumber = 1;
         store.getValues().then(() => this.render());
       };
   }
@@ -56,23 +52,19 @@ export default class Winners extends Control {
       'winners__title',
       `Winners (${store.winnersCount})`,
     );
-
     this.pages = new PagesContainer('winners', store.winnersPage);
-
     this.totalWins = new Control(
       undefined,
       'div',
       'column-wins',
       'Total wins ↕',
     );
-
     this.bestTime = new Control(
       undefined,
       'div',
       'column-time',
       'Best time (seconds) ↕',
     );
-
     const rowWrapper = new ControlArray('div', 'row-wrapper table-header', [
       new Control(undefined, 'div', 'column-number', '№'),
       new Control(undefined, 'div', 'column-image', 'Car image'),
@@ -81,7 +73,6 @@ export default class Winners extends Control {
       this.bestTime,
     ]);
     this.winnersTable = new WinnersTable();
-
     this.wrapper = new ControlArray(
       'div',
       'winners__container',
@@ -89,21 +80,5 @@ export default class Winners extends Control {
       this.node,
     );
     this.startObserve();
-  }
-
-  pageHandler(): void {
-    if (!this.pages) throw new Error("There's no more pages");
-    this.pages.nextBtn.getNode().onclick = () => {
-      if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
-        store.winnersPage++;
-        store.getValues().then(() => this.render());
-      }
-    };
-    this.pages.prevBtn.getNode().onclick = () => {
-      if (store.winnersPage - 1 >= 1) {
-        store.winnersPage--;
-        store.getValues().then(() => this.render());
-      }
-    };
   }
 }

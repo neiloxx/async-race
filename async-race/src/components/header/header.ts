@@ -39,15 +39,4 @@ export default class Header extends Control {
       this.node,
     );
   }
-
-  watchButtons(): void {
-    this.garageState.getNode().onclick = () => {
-      this.winnersState.getNode().classList.remove('active');
-      this.garageState.getNode().classList.add('active');
-    };
-    this.winnersState.getNode().onclick = () => {
-      this.garageState.getNode().classList.remove('active');
-      this.winnersState.getNode().classList.add('active');
-    };
-  }
 }

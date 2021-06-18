@@ -4,24 +4,25 @@ import './style.scss';
 import Garage from './pages/garage/garage';
 import Winners from './pages/winners/winners';
 import store from './store/store';
+import { pageHandler } from './utils/utils';
 
 class App {
   header: Header;
 
   main: Control;
 
-  garage?: Control;
-
-  winners?: Control;
-
   constructor(parent: HTMLElement) {
     this.header = new Header(parent);
     this.main = new Control(parent, 'main', 'main', '');
     this.getAsync().then(() => {
-      this.garage = new Garage();
-      this.winners = new Winners();
-      this.main.getNode().append(this.garage.getNode(), this.winners.getNode());
-      this.watchButtons();
+      const garage = new Garage();
+      const winners = new Winners();
+
+      this.main.getNode().append(garage.getNode(), winners.getNode());
+
+      pageHandler(garage, garage.pages);
+      pageHandler(winners, winners.pages);
+      this.watchButtons(garage, winners);
     });
   }
 
@@ -29,22 +30,18 @@ class App {
     await store.getValues();
   };
 
-  watchButtons(): void {
+  watchButtons(garage: Garage, winners: Winners): void {
     this.header.garageState.getNode().onclick = () => {
       this.header.winnersState.getNode().classList.remove('active');
       this.header.garageState.getNode().classList.add('active');
-      if (this.garage && this.winners) {
-        this.garage.getNode().style.display = 'flex';
-        this.winners.getNode().style.display = 'none';
-      }
+      garage.getNode().style.display = 'flex';
+      winners.getNode().style.display = 'none';
     };
     this.header.winnersState.getNode().onclick = () => {
       this.header.garageState.getNode().classList.remove('active');
       this.header.winnersState.getNode().classList.add('active');
-      if (this.garage && this.winners) {
-        this.winners.getNode().style.display = 'flex';
-        this.garage.getNode().style.display = 'none';
-      }
+      winners.getNode().style.display = 'flex';
+      garage.getNode().style.display = 'none';
     };
   }
 }

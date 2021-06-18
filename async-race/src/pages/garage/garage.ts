@@ -19,6 +19,7 @@ import {
   disableBtn,
   enableBtn,
   generateRandomCars,
+  IRace,
   startDriving,
   stopDriving,
 } from '../../utils/utils';
@@ -44,7 +45,16 @@ export default class Garage extends Control {
     this.render();
   }
 
-  startObserve(): void {
+  observe(): void {
+    this.handleCreateBtn();
+    this.handleUpdateBtn();
+    this.createRandomCars();
+    this.pageHandler();
+    this.handleRaceBtn();
+    this.handleResetBtn();
+  }
+
+  handleCreateBtn(): void {
     if (!this.inputsField) throw new Error("There's no render elements");
     this.inputsField.renderBtn.createBtn.getNode().onclick = () => {
       const newCar = this.inputsField?.getInputsValue();
@@ -56,7 +66,10 @@ export default class Garage extends Control {
         this.render();
       });
     };
+  }
 
+  handleUpdateBtn(): void {
+    if (!this.inputsField) throw new Error("There's no render elements");
     this.inputsField.renderBtn.updateBtn.getNode().onclick = () => {
       const updatedCar = this.inputsField?.getUpdatedValue();
       if (store.selectedCar?.id && updatedCar) {
@@ -67,11 +80,6 @@ export default class Garage extends Control {
         });
       }
     };
-
-    this.createRandomCars();
-    this.pageHandler();
-    this.handleRaceBtn();
-    this.handleResetBtn();
   }
 
   handleRaceBtn(): void {
@@ -90,33 +98,9 @@ export default class Garage extends Control {
                   if (this.inputsField)
                     enableBtn([this.inputsField.resetBtn.getNode()]);
                   const winnerCar = store.cars.find(c => c.id === state.id);
-                  let winner = store.winners.find(c => c.id === state.id);
-                  if (!winner && winnerCar?.id) {
-                    winner = {
-                      id: winnerCar.id,
-                      wins: 1,
-                      time: winTime,
-                    };
-                    createWinner(winner).then(() => {
-                      store.getValues();
-                    });
-                  } else if (winner) {
-                    winner.wins++;
-                    if (winner.time > winTime) winner.time = winTime;
-                    updateWinner(winner).then(() => {
-                      store.getValues();
-                    });
-                  }
+                  this.addWinner(state, winTime, winnerCar);
                   flag = true;
-                  if (this.popup) {
-                    const timeActivePopup = 3000;
-                    this.popup.getNode().innerText = `${winnerCar?.name} won with ${winTime}s`;
-                    this.popup.getNode().style.display = 'flex';
-                    setTimeout(() => {
-                      if (this.popup)
-                        this.popup.getNode().style.display = 'none';
-                    }, timeActivePopup);
-                  }
+                  this.handlePopup(true, winnerCar, winTime);
                 }
                 return state.success;
               })
@@ -125,14 +109,7 @@ export default class Garage extends Control {
         ).then(states => {
           if (this.inputsField && states.every(state => state === false)) {
             enableBtn([this.inputsField.resetBtn.getNode()]);
-            if (this.popup) {
-              const timeActivePopup = 3000;
-              this.popup.getNode().innerText = `All cars are broken`;
-              this.popup.getNode().style.display = 'flex';
-              setTimeout(() => {
-                if (this.popup) this.popup.getNode().style.display = 'none';
-              }, timeActivePopup);
-            }
+            this.handlePopup(false);
           }
         });
       });
@@ -151,48 +128,6 @@ export default class Garage extends Control {
         this.enableBtns();
       });
     };
-  }
-
-  render(): void {
-    this.node.innerHTML = '';
-    this.inputsField = new InputsField(this.node, 'div', 'garage__inputs');
-    this.inputsField.watchInputs();
-    this.title = new Control(
-      undefined,
-      'h2',
-      'garage__title',
-      `garage(${store.carsCount})`,
-    );
-    this.pages = new PagesContainer('garage', store.garagePage);
-
-    this.carsField = new CarsField(
-      undefined,
-      'garage__cars-field',
-      (car: ICar) => {
-        if (car.id) {
-          store.selectedCar = car;
-          this.inputsField?.handleUpdateInputs(car);
-        }
-      },
-      (car: ICar) => {
-        if (car.id) {
-          deleteCar(car.id).then(async () => {
-            if (car.id) await deleteWinner(car.id);
-            await store.getValues();
-            this.render();
-          });
-        }
-      },
-    );
-    this.startObserve();
-
-    this.wrapper = new ControlArray(
-      'div',
-      'garage__container',
-      [this.title, this.pages, this.carsField],
-      this.node,
-    );
-    this.popup = new PopUp(this.node);
   }
 
   pageHandler(): void {
@@ -219,6 +154,46 @@ export default class Garage extends Control {
       await store.getValues();
       this.render();
     };
+  }
+
+  render(): void {
+    this.node.innerHTML = '';
+    this.inputsField = new InputsField(this.node, 'div', 'garage__inputs');
+    this.inputsField.watchInputs();
+    this.title = new Control(
+      undefined,
+      'h2',
+      'garage__title',
+      `garage(${store.carsCount})`,
+    );
+    this.pages = new PagesContainer('garage', store.garagePage);
+    this.carsField = new CarsField(
+      undefined,
+      'garage__cars-field',
+      (car: ICar) => {
+        if (car.id) {
+          store.selectedCar = car;
+          this.inputsField?.handleUpdateInputs(car);
+        }
+      },
+      (car: ICar) => {
+        if (car.id) {
+          deleteCar(car.id).then(async () => {
+            if (car.id) await deleteWinner(car.id);
+            await store.getValues();
+            this.render();
+          });
+        }
+      },
+    );
+    this.observe();
+    this.wrapper = new ControlArray(
+      'div',
+      'garage__container',
+      [this.title, this.pages, this.carsField],
+      this.node,
+    );
+    this.popup = new PopUp(this.node);
   }
 
   disableBtns(): void {
@@ -248,5 +223,34 @@ export default class Garage extends Control {
       this.inputsField.createInput.getNode(),
       this.inputsField.updateInput.getNode(),
     ]);
+  }
+
+  addWinner = (state: IRace, winTime: number, winnerCar?: ICar): void => {
+    let winner = store.winners.find(c => c.id === state.id);
+    if (!winner && winnerCar?.id) {
+      winner = {
+        id: winnerCar.id,
+        wins: 1,
+        time: winTime,
+      };
+      createWinner(winner).then(() => store.getValues());
+    } else if (winner) {
+      winner.wins++;
+      if (winner.time > winTime) winner.time = winTime;
+      updateWinner(winner).then(() => store.getValues());
+    }
+  };
+
+  handlePopup(isWinner = true, winnerCar?: ICar, winTime?: number): void {
+    const timeActivePopup = 3000;
+    if (this.popup) {
+      this.popup.getNode().innerText = isWinner
+        ? `${winnerCar?.name} won with ${winTime}s`
+        : `All cars are broken`;
+      this.popup.getNode().style.display = 'flex';
+      setTimeout(() => {
+        if (this.popup) this.popup.getNode().style.display = 'none';
+      }, timeActivePopup);
+    }
   }
 }
