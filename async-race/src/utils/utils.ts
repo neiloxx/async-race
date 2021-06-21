@@ -136,3 +136,11 @@ export const renderCar = (
   const imageEl = new Control(undefined, 'div', className, svg);
   return { imageEl };
 };
+
+export const switchActiveRoute = (
+  toActivate: Control,
+  toDisable: Control,
+): void => {
+  toActivate.getNode().style.display = 'flex';
+  toDisable.getNode().style.display = 'none';
+};
