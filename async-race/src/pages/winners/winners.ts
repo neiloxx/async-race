@@ -35,13 +35,13 @@ export default class Winners extends Control {
     this.pages.nextBtn.getNode().onclick = () => {
       if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
         store.winnersPage++;
-        store.getValues().then(() => this.render());
+        store.getValues('winners').then(() => this.render());
       }
     };
     this.pages.prevBtn.getNode().onclick = () => {
       if (store.winnersPage - 1 >= 1) {
         store.winnersPage--;
-        store.getValues().then(() => this.render());
+        store.getValues('winners').then(() => this.render());
       }
     };
   }

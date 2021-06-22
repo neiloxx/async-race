@@ -51,23 +51,28 @@ class Store {
 
   onWinnersUpdate?: () => void;
 
-  async getValues(): Promise<void> {
-    await getCars(this.garagePage).then(res => {
-      this.cars = res.items;
-      this.carsCount = res.count;
-    });
-    await getWinners(
-      this.winnersPage,
-      this.maxWinnersOnPage,
-      this.sortBy,
-      this.sortOrder,
-    ).then(res => {
-      this.winners = res.items;
-      this.winnersCount = res.count;
-      if (this.onWinnersUpdate) {
-        this.onWinnersUpdate();
-      }
-    });
+  async getValues(certainValues?: 'cars' | 'winners'): Promise<void> {
+    if (certainValues === 'cars' || !certainValues) {
+      await getCars(this.garagePage).then(res => {
+        this.cars = res.items;
+        this.carsCount = res.count;
+      });
+    }
+
+    if (certainValues === 'winners' || !certainValues) {
+      await getWinners(
+        this.winnersPage,
+        this.maxWinnersOnPage,
+        this.sortBy,
+        this.sortOrder,
+      ).then(res => {
+        this.winners = res.items;
+        this.winnersCount = res.count;
+        if (this.onWinnersUpdate) {
+          this.onWinnersUpdate();
+        }
+      });
+    }
   }
 }
 

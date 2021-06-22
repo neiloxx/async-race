@@ -132,13 +132,13 @@ export default class Garage extends Control {
     this.pages.nextBtn.getNode().onclick = () => {
       if (store.garagePage * store.maxCarsOnPage < store.carsCount) {
         store.garagePage++;
-        store.getValues().then(() => this.render());
+        store.getValues('cars').then(() => this.render());
       }
     };
     this.pages.prevBtn.getNode().onclick = () => {
       if (store.garagePage - 1 >= 1) {
         store.garagePage--;
-        store.getValues().then(() => this.render());
+        store.getValues('cars').then(() => this.render());
       }
     };
   }
