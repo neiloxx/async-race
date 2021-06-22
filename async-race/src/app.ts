@@ -4,7 +4,6 @@ import './style.scss';
 import Garage from './pages/garage/garage';
 import Winners from './pages/winners/winners';
 import store from './store/store';
-import { pageHandler } from './components/elements/pages-container/page-handler';
 import { switchActiveRoute } from './utils/utils';
 
 export class App {
@@ -28,8 +27,6 @@ export class App {
 
       this.main.getNode().append(garage.getNode(), winners.getNode());
 
-      pageHandler(garage, garage.pages);
-      pageHandler(winners, winners.pages);
       this.watchButtons(garage, winners);
     });
   }

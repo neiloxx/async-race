@@ -27,6 +27,23 @@ export default class Winners extends Control {
 
   startObserve(): void {
     this.handleSortButtons();
+    this.pageHandler();
+  }
+
+  pageHandler(): void {
+    if (!this.pages) throw new Error("There's no more pages");
+    this.pages.nextBtn.getNode().onclick = () => {
+      if (store.winnersPage * store.maxWinnersOnPage < store.winnersCount) {
+        store.winnersPage++;
+        store.getValues('winners').then(() => this.render());
+      }
+    };
+    this.pages.prevBtn.getNode().onclick = () => {
+      if (store.winnersPage - 1 >= 1) {
+        store.winnersPage--;
+        store.getValues('winners').then(() => this.render());
+      }
+    };
   }
 
   handleSortButtons(): void {
