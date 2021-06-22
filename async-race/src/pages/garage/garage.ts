@@ -9,7 +9,6 @@ import {
   createWinner,
   deleteCar,
   deleteWinner,
-  startEngine,
   updateCar,
   updateWinner,
 } from '../../api/cars';
@@ -87,31 +86,29 @@ export default class Garage extends Control {
     this.inputsField.raceBtn.getNode().onclick = async () => {
       let flag = false;
       this.disableBtns();
-      Promise.all(store.cars.map(car => startEngine(car.id || 0))).then(() => {
-        if (this.inputsField) disableBtn([this.inputsField.raceBtn.getNode()]);
-        Promise.all(
-          store.cars.map(car =>
-            startDriving(car.id || 0)
-              .then(state => {
-                const winTime = state.animationTime / msInSecond;
-                if (state.success && !flag) {
-                  if (this.inputsField)
-                    enableBtn([this.inputsField.resetBtn.getNode()]);
-                  const winnerCar = store.cars.find(c => c.id === state.id);
-                  this.addWinner(state, winTime, winnerCar);
-                  flag = true;
-                  this.handlePopup(true, winnerCar, winTime);
-                }
-                return state.success;
-              })
-              .catch(() => {}),
-          ),
-        ).then(states => {
-          if (this.inputsField && states.every(state => state === false)) {
-            enableBtn([this.inputsField.resetBtn.getNode()]);
-            this.handlePopup(false);
-          }
-        });
+      if (this.inputsField) disableBtn([this.inputsField.raceBtn.getNode()]);
+      Promise.all(
+        store.cars.map(car =>
+          startDriving(car.id || 0)
+            .then(state => {
+              const winTime = state.animationTime / msInSecond;
+              if (state.success && !flag) {
+                if (this.inputsField)
+                  enableBtn([this.inputsField.resetBtn.getNode()]);
+                const winnerCar = store.cars.find(c => c.id === state.id);
+                this.addWinner(state, winTime, winnerCar);
+                flag = true;
+                this.handlePopup(true, winnerCar, winTime);
+              }
+              return state.success;
+            })
+            .catch(() => {}),
+        ),
+      ).then(states => {
+        if (this.inputsField && states.every(state => state === false)) {
+          enableBtn([this.inputsField.resetBtn.getNode()]);
+          this.handlePopup(false);
+        }
       });
     };
   }
